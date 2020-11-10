@@ -1,0 +1,54 @@
+{% extends 'info/nav.html' %}
+{% block title %}Results{% endblock %}
+{% block body %}
+
+<div class="container">
+
+<div class="row">
+    
+    <div class="text-center col-sm-12 col-md-12">
+            <div class="panel-body">
+                <!--<a class="text-center">
+                    {% if result.profile_image %}
+                        <img src="{{ result.profile_image }}" alt="profile image">
+                    {% else %}
+                        <h3>No image to display</h3>
+                    {% endif %}
+                </a>-->
+                <h3>{{ result.org_name }}</h3>
+            </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel panel-default">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th class="text-center" style="width: 70%">Repo List</th>
+                        <th class="text-center">Forks</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                <!-- for loop for tweets goes here -->
+                    {% for repo in result.repos %}
+                    <tr>
+                        <td>
+                            <h4 class="text-center"><a href="{{ repo.url }}" target="_blank">{{ repo.name }}</a></h4>
+                        </td>
+                        <td>
+                            <h5 class="text-center">{{ repo.forks }}</h5>
+
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}

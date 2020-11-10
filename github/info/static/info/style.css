@@ -1,0 +1,23 @@
+.navbar{
+    border-radius: 0;
+}
+
+.navbar-brand{
+    font-family: 'Monospace', cursive;
+}
+
+ul.errorlist {
+    padding-left: 0;
+}
+
+ul.errorlist > li {
+    list-style: none;
+}
+
+.icon-success {
+    color: #38a832;
+}
+
+.icon-wrong {
+    color: #cf1515;
+}
