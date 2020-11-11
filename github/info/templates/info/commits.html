@@ -1,5 +1,5 @@
 {% extends 'info/nav.html' %}
-{% block title %}Results{% endblock %}
+{% block title %}Commits{% endblock %}
 {% block body %}
 
 <div class="container">
@@ -8,14 +8,14 @@
     
     <div class="text-center col-sm-12 col-md-12">
             <div class="panel-body">
-                <a class="text-center">
-                    {% if result.org_img %}
-                        <img src="{{ result.org_img }}" alt="organization image" style="width: 50px">
+                <!--<a class="text-center">
+                    {% if result.profile_image %}
+                        <img src="{{ result.profile_image }}" alt="profile image">
                     {% else %}
                         <h3>No image to display</h3>
                     {% endif %}
                 </a>
-                <h3>{{ result.org_name }}</h3>
+                <h3>{{ result.org_name }}</h3>-->
             </div>
     </div>
 </div>
@@ -27,22 +27,20 @@
             <table class="table table-bordered table-hover">
                 <thead class="thead-dark">
                     <tr>
-                        <th class="text-center" style="width: 70%">Repositories List</th>
-                        <th class="text-center">Forks</th>
+                        <th class="text-center" style="width: 70%">Username</th>
+                        <th class="text-center">Commits</th>
                     </tr>
                 </thead>
 
                 <tbody>
                 <!-- for loop for tweets goes here -->
-                    {% for repo in result.repos %}
+                    {% for contrib in result.contributions %}
                     <tr>
-                        <td class="text-center">
-                            <h4>{{ repo.name }}</a></h4>
-                            <a href="{{ repo.url }}" target="_blank" class="btn btn-primary btn-sm" role="button">View on Github</a>
-                            <a href="{% url 'info:commits' repo.id result.m%}" class="btn btn-success btn-sm" role="button">See Committees</a>
+                        <td>
+                            <h4 class="text-center"><a href="{{ contrib.url }}" target="_blank">{{ contrib.user }}</a></h4>
                         </td>
                         <td>
-                            <h5 class="text-center">{{ repo.forks }}</h5>
+                            <h5 class="text-center">{{ contrib.commits }}</h5>
 
                         </td>
                     </tr>
