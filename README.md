@@ -3,13 +3,13 @@ Django Implementation of Almabase SDE 6 months task. The website is running on p
 
 ## Content
 
-- [Pre-requisites](https://github.com/srijansingh53/almaabse-task#pre-requisites)
-- [Tools Used](https://github.com/srijansingh53/almaabse-task#tools-used)
-- [Run Locally](https://github.com/srijansingh53/almaabse-task#run-locally)
-- [Results](https://github.com/srijansingh53/IP_project#results)
-    - [Search](https://github.com/srijansingh53/IP_project#search)
-    - [Repositories](https://github.com/srijansingh53/IP_project#repositories)
-    - [Committees](https://github.com/srijansingh53/IP_project#committees)
+- [Pre-requisites](https://github.com/srijansingh53/almabase-task#pre-requisites)
+- [Tools Used](https://github.com/srijansingh53/almabase-task#tools-used)
+- [Run Locally](https://github.com/srijansingh53/almabase-task#run-locally)
+- [Results](https://github.com/srijansingh53/almabase-task#results)
+    - [Search](https://github.com/srijansingh53/almabase-task#search)
+    - [Repositories](https://github.com/srijansingh53/almabase-task#repositories)
+    - [Committees](https://github.com/srijansingh53/almabase-task#committees)
 
 
 ## Pre-requisites
@@ -46,15 +46,15 @@ The following are the screenshots of different web-pages
 
 ### Search
 
-<img src="/outputs/search.png"  width="150" height="300">
+<img src="/outputs/search.png">
 
 
 ### Repositories
 
-<img src="/outputs/repo.png"  width="150" height="300">
+<img src="/outputs/repo.png">
 
 ### Committees
 
-<img src="/outputs/commits.png"  width="150" height="300">
+<img src="/outputs/commits.png">
 
 
