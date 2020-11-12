@@ -30,7 +30,6 @@ def get_repositories(org_name, n):
     if response.status_code==200:
         resp_json = json.loads(response.text)
         n = min(n,resp_json['total_count'])
-        print(n)
         repo_list = []
         org_img = resp_json['items'][0]['owner']['avatar_url']
         for repo in resp_json['items'][0:n]:
@@ -40,7 +39,6 @@ def get_repositories(org_name, n):
         if len(repo_list)==n:
             return repo_list, org_img, 200
         else:
-            print('d')
             if 'Link' in response.headers:
                 next_page, last_page = map(int, re.findall(r'page=(\d+)', response.headers['Link']))
 
@@ -61,7 +59,7 @@ def get_repositories(org_name, n):
             return repo_list, org_img, 200
     
     else:
-        return None, None, 422
+        return None, None, 204
 
 
 def search_repo(request):
@@ -76,8 +74,11 @@ def search_repo(request):
             if status_code==200:
                 result = {"org_name": org_name,"org_img": org_img,"repos": repo_list,"m":m}
                 return render(request, 'info/searched.html', {'result': result})
-            else:
+            elif status_code==204:
                 messages.success(request, 'No public repositories found in '+org_name)
+                return render(request, 'info/home.html')
+            else:
+                messages.success(request, 'Github API rate limit exeeded')
                 return render(request, 'info/home.html')
         elif valid==404:
             return render(request, 'info/home.html', {'error': 'Please input a valid organization'})
