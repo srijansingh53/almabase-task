@@ -33,7 +33,7 @@ https://api.github.com/search/repositories?q=user:{org_name}&sort=forks - to sea
 https://api.github.com/orgs/{org_name} - to verify if it is an organization
 https://api.github.com/repositories/{repo_id}/contributions - to get all committees ordered by most commits
 ```
-(P.S. The github API allows 10 requests per minute for search endpoint. You may get alert for rate limit exeeded for higher number of repos.)
+(P.S. The github API allows 10 requests per minute for search endpoint. You may get alert for rate limit exeeded for higher number of repos. You may have to wait for 1 minute before running any other request.)
 
 ## Run Locally
 
