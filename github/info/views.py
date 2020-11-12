@@ -16,12 +16,13 @@ search_api = r'search/repositories'
 def home(request):
     return render(request, 'info/home.html')
 
+# check if the organization name is valid
 def valid_org(org_name):
     url = github_api + org_api + org_name
     response = requests.get(url)
     return (response.status_code)
 
-
+# retrieve n repositories of an organization
 def get_repositories(org_name, n):
     url = github_api + search_api + r'?q=user:' + org_name + r'&sort=forks'
     
@@ -61,7 +62,7 @@ def get_repositories(org_name, n):
     else:
         return None, None, 204
 
-
+# function to accept form post request and return n repo 
 def search_repo(request):
     if request.method == "POST":
         org_name = request.POST['org_name']
@@ -85,6 +86,7 @@ def search_repo(request):
         else:
             return render(request, 'info/home.html', {'error': 'Some internal error occurred. Error: '+valid})
 
+# Retrieve m committees for the particular repo
 def get_committees(repo_id,m):
     url = github_api + 'repositories/' + str(repo_id) + '/contributors'
 
@@ -121,15 +123,15 @@ def get_committees(repo_id,m):
     else:
         return None, response.status_code
 
-
+# function to accept get request for m committees on repo id
 def commits(request, repo_id, m):
-    
-    contrib_list, status_code = get_committees(repo_id,int(m))
-    result = {"contributions": contrib_list}
-    if status_code==200: 
-        return render(request, 'info/commits.html', {"result": result})
-    else:
-        messages.success(request, 'No contributors found')
-        return render(request, 'info/commits.html', {"result": None})
+    if request.method == 'GET':
+        contrib_list, status_code = get_committees(repo_id,int(m))
+        result = {"contributions": contrib_list}
+        if status_code==200: 
+            return render(request, 'info/commits.html', {"result": result})
+        else:
+            messages.success(request, 'No contributors found')
+            return render(request, 'info/commits.html', {"result": None})
 
 
