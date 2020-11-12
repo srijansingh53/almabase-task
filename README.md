@@ -39,7 +39,7 @@ https://api.github.com/repositories/{repo_id}/contributions - to get all committ
 
 Run the following command to run locally on [127.0.0.1:8000](http://127.0.0.1:8000)
 ```
-python manage.py runserver
+python github/manage.py runserver
 ```
 
 ## Results
