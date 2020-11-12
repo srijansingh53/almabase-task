@@ -3,6 +3,7 @@ from django.http import JsonResponse, HttpResponse
 import requests
 import json
 import re
+from django.contrib import messages
 from requests.exceptions import ConnectionError
 
 # Create your views here.
@@ -23,12 +24,13 @@ def valid_org(org_name):
 
 def get_repositories(org_name, n):
     url = github_api + search_api + r'?q=user:' + org_name + r'&sort=forks'
-    print(url)
+    
     response = requests.get(url)
-
+    # print(response.status_code)
     if response.status_code==200:
         resp_json = json.loads(response.text)
-        
+        n = min(n,resp_json['total_count'])
+        print(n)
         repo_list = []
         org_img = resp_json['items'][0]['owner']['avatar_url']
         for repo in resp_json['items'][0:n]:
@@ -38,27 +40,28 @@ def get_repositories(org_name, n):
         if len(repo_list)==n:
             return repo_list, org_img, 200
         else:
-            # print(response.headers['Link'])
-            next_page, last_page = map(int, re.findall(r'page=(\d+)', response.headers['Link']))
+            print('d')
+            if 'Link' in response.headers:
+                next_page, last_page = map(int, re.findall(r'page=(\d+)', response.headers['Link']))
 
-            while next_page<=last_page and len(repo_list)<n:
-                remaining_repo = n - len(repo_list)
-                next_url = url + r'&page=' + str(next_page)
-                try:
-                    response = requests.get(next_url)
-                    resp_json = json.loads(response.text)
+                while next_page<=last_page and len(repo_list)<n:
+                    remaining_repo = n - len(repo_list)
+                    next_url = url + r'&page=' + str(next_page)
+                    try:
+                        response = requests.get(next_url)
+                        resp_json = json.loads(response.text)
 
-                    for repo in resp_json['items'][0:int(remaining_repo)]:
-                        item = {"id": repo['id'],"name": repo['name'],"forks": repo['forks'],"url": repo['html_url']}
-                        repo_list.append(item)
-                    next_page+=1
-                except:
-                    return None, None, 400
-            
+                        for repo in resp_json['items'][0:int(remaining_repo)]:
+                            item = {"id": repo['id'],"name": repo['name'],"forks": repo['forks'],"url": repo['html_url']}
+                            repo_list.append(item)
+                        next_page+=1
+                    except:
+                        return None, None, 422
+                
             return repo_list, org_img, 200
     
     else:
-        return None, None, 400
+        return None, None, 422
 
 
 def search_repo(request):
@@ -67,14 +70,15 @@ def search_repo(request):
         n = int(request.POST['n'])
         m = int(request.POST['m'])
         valid = valid_org(org_name)
-        print(valid)
+        # print(valid)
         if valid==200:
             repo_list, org_img, status_code = get_repositories(org_name,n)
             if status_code==200:
                 result = {"org_name": org_name,"org_img": org_img,"repos": repo_list,"m":m}
                 return render(request, 'info/searched.html', {'result': result})
             else:
-                return HttpResponse(status_code)
+                messages.success(request, 'No public repositories found in '+org_name)
+                return render(request, 'info/home.html')
         elif valid==404:
             return render(request, 'info/home.html', {'error': 'Please input a valid organization'})
         else:
@@ -120,10 +124,11 @@ def get_committees(repo_id,m):
 def commits(request, repo_id, m):
     
     contrib_list, status_code = get_committees(repo_id,int(m))
-    if status_code==200:
-        result = {"contributions": contrib_list}
+    result = {"contributions": contrib_list}
+    if status_code==200: 
         return render(request, 'info/commits.html', {"result": result})
     else:
-        return HttpResponse(status_code)
+        messages.success(request, 'No contributors found')
+        return render(request, 'info/commits.html', {"result": None})
 
 
